@@ -1,0 +1,188 @@
+<!doctype html>
+<html class="no-js" lang="en" ng-app="homeworkApp">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Appversaries Homework Ferenc Kamras</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--
+    <link rel="stylesheet" href="bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css">
+    <link rel="stylesheet" href="styles/main.css">
+    -->
+
+<link rel="stylesheet" href="dist/main.min.css">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <script>window.html5 || document.write('<script src="bower_components/html5shiv/dist/html5shiv.min.js"><\/script>')</script>
+    <![endif]-->
+
+</head>
+<body>
+<!--[if lt IE 8]>
+<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+    your browser</a> to improve your experience.</p>
+<![endif]-->
+
+
+<div class="wrapper" ng-controller="AppController"  >
+
+    <aside class="sidebar-1 custom-scroll" data-scroll-theme="dark" >
+
+        <div class="filters" >
+
+            <header>
+                <img src="img/app-logo.png" alt=""/>
+            </header>
+
+            <div class="position-relative" >
+                <button class="clear-btn" type="button" >Clear</button>
+                <button id="sidebarToggle" class="sidebar-toggle" type="button" ></button>
+            </div>
+
+            <form action="" >
+
+                <input class="input-text input-text-search" placeholder="Search" type="text" ng-model="search" />
+
+            </form>
+
+            <p class="filter-label">
+                Filter by services
+            </p>
+
+            <ul class="filter-grid">
+                <li ng-repeat="(serviceFilterKey, serviceFilter) in filters.services"
+                    ng-class="{'active': isFilterActive('services', serviceFilterKey)}" >
+                    <span class="clickable" ng-click="setFilter('services', serviceFilterKey)" >
+                        <img ng-src="img/filtericons/services/{{serviceFilterKey}}.png" alt="" />
+                    </span>
+                </li>
+            </ul>
+
+            <p class="filter-label">
+                Filter by focus
+            </p>
+
+            <ul class="filter-list">
+                <li ng-repeat="(focusFilterKey, focusFilter) in filters.focus"
+                    ng-class="{'active': isFilterActive('focus', focusFilterKey)}" >
+                    <span class="clickable" ng-click="setFilter('focus', focusFilterKey)" >
+                        {{focusFilter}}
+                    </span>
+                </li>
+            </ul>
+
+            <p class="filter-label">
+                Filter by Industry
+            </p>
+
+            <ul class="filter-grid">
+                <li ng-repeat="(industryFilterKey, industryFilter) in filters.industries"
+                    ng-class="{'active': isFilterActive('industries', industryFilterKey)}" >
+                    <span class="clickable" ng-click="setFilter('industries', industryFilterKey)" >
+                        <img ng-src="img/filtericons/industries/{{industryFilterKey}}.png" alt="" />
+                    </span>
+                </li>
+            </ul>
+
+            <p class="filter-label">
+                Filter by company size
+            </p>
+
+            <ul class="filter-grid">
+                <li ng-repeat="(sizeFilterKey, sizeFilter) in filters.size"
+                    ng-class="{'active': isFilterActive('size', sizeFilterKey)}" >
+                    <span class="clickable" ng-click="setFilter('size', sizeFilterKey)" >
+                        <img ng-src="img/filtericons/size/{{sizeFilterKey}}.png" alt="" />
+                    </span>
+                </li>
+            </ul>
+
+            <div class="form-action">
+
+                <button type="button" class="btn btn-primary" ng-click="addBodyClass('xs-step-2')" >
+                    Search
+                </button>
+
+            </div>
+
+        </div>
+
+    </aside>
+
+    <div class="sidebar-2 custom-scroll" >
+
+        <button type="button" ng-click="removeBodyClass('xs-step-2')" class="xs-back">
+            Back
+        </button>
+
+        <a ng-repeat="(companyKey, company) in companies | filter: filterFunction"
+             ng-class="{ 'item-short': 1, 'active': isCompanyActive(companyKey)}"
+             ng-href="#{{companyKey}}"
+                >
+
+            <img src="http://placehold.it/60x60" alt=""/>
+            
+            <span class="title">{{company.company_name}}</span>
+            <span class="sub-title">{{company.year_founded}} - {{filters.focus[company.focus]}}</span>
+            <span>
+                {{company.headquarters}} <br/>
+                Usability Testing, Test Automation
+            </span>
+        </a>
+
+        <form action="" >
+
+            <h4 class="form-title" >Add New Company</h4>
+
+            <div class="form-group" >
+                <label class="input-label" for="company_name" >Company Name</label>
+                <input class="input-text" type="text" placeholder="Name" id="company_name" />
+            </div>
+
+            <div class="form-group" for="">
+                <label class="input-label" for="company_url" >Crunchbase URL</label>
+                <input class="input-text" type="text" placeholder="URL" id="company_url" />
+            </div>
+
+            <div class="form-action">
+
+                <button type="submit" class="btn btn-primary">
+                    Add Company
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <main class="main custom-scroll" >
+        <button type="button" ng-click="removeBodyClass('xs-step-3')" class="xs-back">
+            Back
+        </button>
+        <div class="item-details" ng-view ></div>
+    </main>
+
+</div>
+
+<!--
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/jquery-mousewheel/jquery.mousewheel.js" ></script>
+<script src="bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.js" ></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/angular-route/angular-route.js"></script>
+<script src="bower_components/angular-animate/angular-animate.js"></script>
+<script src="js/main.js"></script>
+<script src="js/plugins.js"></script>
+-->
+
+<script src="dist/main.min.js" ></script>
+
+<link href='http://fonts.googleapis.com/css?family=Lora:400,700' rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+
+</body>
+</html>
